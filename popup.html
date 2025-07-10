@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Save DartPad Content</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                width: 300px;
+                font-family: Arial, sans-serif;
+            }
+            .hero {
+                padding: 15px;
+            }
+            p {
+                margin-top: 10px;
+            }
+            button {
+                width: 100%;
+                padding: 10px;
+                margin-top: 10px;
+                background-color: #4caf50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #45a049;
+            }
+            footer {
+                width: 100%;
+                background-color: #f0f0f0;
+                height: 30px;
+                margin: 0;
+                text-align: center;
+                font-size: 0.9em;
+                color: #555;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            footer a {
+                /* color: #ffdd00; */
+                color: #555;
+                text-decoration: none;
+                font-weight: bold;
+                display: inline-flex;
+                align-items: center;
+                margin-left: 10px;
+            }
+            footer a:hover {
+                text-decoration: underline;
+            }
+            footer img {
+                width: 20px;
+                height: 20px;
+                margin-right: 5px;
+                border-radius: 5px;
+            }
+
+            .error {
+                visibility: hidden;
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                background-color: #e62323;
+                height: 30px;
+                margin: 0;
+                text-align: center;
+                font-size: 0.9em;
+                color: #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 9999;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="hero">
+            <h2>Save DartPad Content</h2>
+            <p>Click the button below to save the current DartPad content.</p>
+            <button id="saveBtn" type="button" aria-label="Save Dart File">
+                Save Dart File
+            </button>
+        </div>
+        <footer>
+            <span>© <span id="year"></span> lotfi_bkmr</span>
+            <a
+                href="https://www.buymeacoffee.com/lotfibkmr"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <img src="icon.png" alt="Buy Me a Coffee icon" />
+                Buy me a coffee
+            </a>
+        </footer>
+        <div id="error" class="error">
+            <span>This extension only works on https://dartpad.dev</span>
+        </div>
+        <script src="popup.js"></script>
+        <script src="footer.js"></script>
+    </body>
+</html>
