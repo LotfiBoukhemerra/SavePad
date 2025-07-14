@@ -1,63 +1,51 @@
-# SavePad - DartPad Code Snippet Saver
+# Save DartPad Content
 
-A browser extension that makes it easy to save code snippets from [DartPad](https://dartpad.dev/), the online editor for Dart programming language.
+A simple Chrome Extension to save your code directly from dartpad.dev.
 
 ## Features
 
--   One-click code saving from DartPad
--   Browser toolbar integration
--   Context menu support
--   Automatic file downloads
--   Clean and intuitive user interface
--   Support for the latest DartPad interface
+-   Save the current code content from DartPad with a single click.
+-   Option to save via a browser action popup or a context menu item.
+-   Downloads the code as a `.dart` file.
 
 ## Installation
 
-1. Download the extension from your browser's extension store
-2. Click on the extension icon to pin it to your toolbar
-3. Navigate to [DartPad](https://dartpad.dev/)
-4. Use the extension to save your code snippets
+1.  Go to the [Chrome Web Store page](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk).
+2.  Click the "Add to Chrome" button.
+3.  Confirm the installation when prompted.
 
 ## Usage
 
-1. Visit [DartPad](https://dartpad.dev/)
-2. Write or edit your Dart code
-3. Click the SavePad extension icon in your browser toolbar
-4. Your code will be automatically saved to your downloads folder
+1.  Navigate to [DartPad.dev](https://dartpad.dev/).
+2.  Write or load your Dart code.
+3.  Click the "Save DartPad Content" extension icon in your browser toolbar, then click "Save Dart File".
+4.  Alternatively, right-click anywhere on the DartPad page and select "Save Dart file" from the context menu.
+5.  The code will be downloaded as a `.dart` file to your default download location.
 
-## Technical Details
+## Availability
 
--   Built using Manifest V3
--   Compatible with modern browsers
--   Uses secure permissions model
--   Supports active tab integration
--   Clean and efficient code implementation
+You can find the "Save DartPad Content" extension on the following browser stores:
 
-## Permissions
+| Browser | Link                                                                                                               |
+| :------ | :----------------------------------------------------------------------------------------------------------------- |
+| Chrome  | [Chrome Web Store](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk) |
+| Firefox | Coming Soon                                                                                                        |
+| Opera   | Coming Soon                                                                                                        |
+| Edge    | Coming Soon                                                                                                        |
 
-The extension requires the following permissions:
+## Development
 
--   `activeTab`: To interact with the active DartPad tab
--   `downloads`: To save the code snippets
--   `scripting`: To extract code content
--   `contextMenus`: To provide right-click functionality
+This extension is built using standard Web Extension APIs.
 
-## Version
-
-Current version: 1.3.0
-
-## Developer
-
-Visit [developer's website](https://lotfi.dev) for more information.
+-   `manifest.json`: Defines the extension's properties, permissions, and background scripts.
+-   `popup.html` / `popup.js`: Provides the browser action popup interface and logic.
+-   `background.js`: Handles events like context menu clicks and orchestrates the content script injection and download.
+-   `content.js`: Injected into DartPad pages to extract the code content.
 
 ## Contributing
 
-Contributions are welcome! Feel free to submit issues and pull requests.
+If you find any issues or have suggestions, please open an issue on the GitHub repository.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
----
-
-Made with ❤️ for the Dart community
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
