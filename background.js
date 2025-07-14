@@ -1,4 +1,4 @@
-// background.js
+// background.js - Firefox compatible version
 
 const activeSite = 'dartpad.dev';
 const targetUrl = 'https://dartpad.dev/*';
@@ -14,13 +14,15 @@ const inactiveIcon = {
     128: 'inactive_icon128.png'
 };
 
+// Cross-browser compatibility
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+
 function updateIcon(tab) {
-    // tab && tab.url && tab.id
     if (tab && tab.id) {
         const iconSet = tab.url && tab.url.includes(activeSite) ? activeIcon : inactiveIcon;
-        chrome.action.setIcon({ path: iconSet, tabId: tab.id }, () => {
-            if (chrome.runtime.lastError) {
-                console.warn('Error setting icon:', chrome.runtime.lastError.message);
+        browserAPI.browserAction.setIcon({ path: iconSet, tabId: tab.id }, () => {
+            if (browserAPI.runtime.lastError) {
+                console.warn('Error setting icon:', browserAPI.runtime.lastError.message);
             }
         });
     } else {
@@ -31,29 +33,29 @@ function updateIcon(tab) {
 function updateContextMenu(tab) {
     if (tab && tab.url) {
         const isVisible = tab.url.startsWith('https://dartpad.dev');
-        chrome.contextMenus.update('save-dart-file', { visible: isVisible }, () => {
-            if (chrome.runtime.lastError) {
-                console.warn('Error updating context menu:', chrome.runtime.lastError.message);
+        browserAPI.contextMenus.update('save-dart-file', { visible: isVisible }, () => {
+            if (browserAPI.runtime.lastError) {
+                console.warn('Error updating context menu:', browserAPI.runtime.lastError.message);
             }
         });
     }
 }
 
 // Remove existing context menu items to avoid duplicates
-chrome.contextMenus.removeAll(() => {
-    chrome.contextMenus.create({
+browserAPI.contextMenus.removeAll(() => {
+    browserAPI.contextMenus.create({
         id: 'save-dart-file',
         title: 'Save Dart file',
         contexts: ['all'],
         documentUrlPatterns: [targetUrl]
     }, () => {
-        if (chrome.runtime.lastError) {
-            console.warn('Error creating context menu:', chrome.runtime.lastError.message);
+        if (browserAPI.runtime.lastError) {
+            console.warn('Error creating context menu:', browserAPI.runtime.lastError.message);
         }
     });
 });
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+browserAPI.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status === 'complete') {
         if (tab) {
             updateContextMenu(tab);
@@ -64,10 +66,10 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     }
 });
 
-chrome.tabs.onActivated.addListener((activeInfo) => {
-    chrome.tabs.get(activeInfo.tabId, (tab) => {
-        if (chrome.runtime.lastError) {
-            console.warn('Error getting tab:', chrome.runtime.lastError.message);
+browserAPI.tabs.onActivated.addListener((activeInfo) => {
+    browserAPI.tabs.get(activeInfo.tabId, (tab) => {
+        if (browserAPI.runtime.lastError) {
+            console.warn('Error getting tab:', browserAPI.runtime.lastError.message);
             return;
         }
         if (tab) {
@@ -79,21 +81,19 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
     });
 });
 
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+browserAPI.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'save-dart-file' && tab && tab.id) {
-        chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: extractAndSendContent
+        browserAPI.tabs.executeScript(tab.id, {
+            code: `(${extractAndSendContent.toString()})()`
         }, () => {
-            if (chrome.runtime.lastError) {
-                console.error('Error executing script:', chrome.runtime.lastError.message);
+            if (browserAPI.runtime.lastError) {
+                console.error('Error executing script:', browserAPI.runtime.lastError.message);
             }
         });
     }
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-
+browserAPI.runtime.onMessage.addListener((request, sender, sendResponse) => {
     function padTo2Digits(num) {
         return num.toString().padStart(2, '0');
     }
@@ -115,9 +115,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
 
     if (request.action === 'saveContent') {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (chrome.runtime.lastError) {
-                sendResponse({ success: false, error: chrome.runtime.lastError.message });
+        browserAPI.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (browserAPI.runtime.lastError) {
+                sendResponse({ success: false, error: browserAPI.runtime.lastError.message });
                 return;
             }
 
@@ -137,29 +137,52 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
                     .filter(line => line !== '' && line !== '​')
                     .join('\n');
 
-                const blob = new Blob([content], { type: 'application/dart' });
-                const reader = new FileReader();
+                const now = new Date();
+                const dateString = formatDate(now);
+                const filename = `dartpad_${dateString}.dart`;
 
-                reader.onloadend = () => {
-                    const base64data = reader.result;
-                    const now = new Date();
-                    const dateString = formatDate(now);
-                    const filename = `dartpad_${dateString}.dart`;
-
-                    chrome.downloads.download({
-                        url: base64data,
+                // Firefox-specific download handling
+                if (typeof browser !== 'undefined') {
+                    // Firefox: Use blob URL approach
+                    const blob = new Blob([content], { type: 'application/dart' });
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    browserAPI.downloads.download({
+                        url: blobUrl,
                         filename: filename,
                         conflictAction: 'uniquify'
                     }, (downloadId) => {
-                        if (chrome.runtime.lastError) {
-                            sendResponse({ success: false, error: chrome.runtime.lastError.message });
+                        // Clean up the blob URL after download
+                        setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+                        
+                        if (browserAPI.runtime.lastError) {
+                            sendResponse({ success: false, error: browserAPI.runtime.lastError.message });
                         } else {
                             sendResponse({ success: true });
                         }
                     });
-                };
+                } else {
+                    // Chrome: Use data URL approach
+                    const blob = new Blob([content], { type: 'application/dart' });
+                    const reader = new FileReader();
 
-                reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        const base64data = reader.result;
+                        browserAPI.downloads.download({
+                            url: base64data,
+                            filename: filename,
+                            conflictAction: 'uniquify'
+                        }, (downloadId) => {
+                            if (browserAPI.runtime.lastError) {
+                                sendResponse({ success: false, error: browserAPI.runtime.lastError.message });
+                            } else {
+                                sendResponse({ success: true });
+                            }
+                        });
+                    };
+
+                    reader.readAsDataURL(blob);
+                }
             } else {
                 sendResponse({ success: false, error: 'This extension only works on dartpad.dev' });
             }
@@ -196,7 +219,10 @@ function extractAndSendContent() {
         .filter(line => line !== '' && line !== '​')
         .join('\n');
 
-    chrome.runtime.sendMessage({ action: 'saveContent', content: content }, (response) => {
+    // Use cross-browser API
+    const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+    
+    browserAPI.runtime.sendMessage({ action: 'saveContent', content: content }, (response) => {
         if (response.success) {
             showNotification('Content saved successfully!');
         } else {

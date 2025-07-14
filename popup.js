@@ -1,4 +1,7 @@
-// popup.js
+// popup.js - Firefox compatible version
+
+// Cross-browser compatibility
+const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
 
 function showNotificationError() {
     const notification = document.getElementById('error');
@@ -35,7 +38,10 @@ function extractAndSendContent() {
         .filter(line => line !== '' && line !== '​')
         .join('\n');
 
-    chrome.runtime.sendMessage({ action: 'saveContent', content: content }, (response) => {
+    // Use cross-browser API
+    const browserAPI = typeof browser !== 'undefined' ? browser : chrome;
+    
+    browserAPI.runtime.sendMessage({ action: 'saveContent', content: content }, (response) => {
         if (response.success) {
             showNotification('Content saved successfully!');
         } else {
@@ -46,9 +52,9 @@ function extractAndSendContent() {
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('saveBtn').addEventListener('click', () => {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (chrome.runtime.lastError) {
-                console.error('Error querying tabs:', chrome.runtime.lastError.message);
+        browserAPI.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (browserAPI.runtime.lastError) {
+                console.error('Error querying tabs:', browserAPI.runtime.lastError.message);
                 showNotificationError();
                 return;
             }
@@ -56,12 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentTab = tabs[0];
 
             if (currentTab && currentTab.url && currentTab.url.startsWith('https://dartpad.dev')) {
-                chrome.scripting.executeScript({
-                    target: { tabId: currentTab.id },
-                    function: extractAndSendContent
+                browserAPI.tabs.executeScript(currentTab.id, {
+                    code: `(${extractAndSendContent.toString()})()`
                 }, () => {
-                    if (chrome.runtime.lastError) {
-                        console.error('Error executing script:', chrome.runtime.lastError.message);
+                    if (browserAPI.runtime.lastError) {
+                        console.error('Error executing script:', browserAPI.runtime.lastError.message);
                         showNotificationError();
                     }
                 });
