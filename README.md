@@ -29,7 +29,7 @@ You can find the "Save DartPad Content" extension on the following browser store
 | Browser | Link                                                                                                               |
 | :------ | :----------------------------------------------------------------------------------------------------------------- |
 | Chrome  | [Chrome Web Store](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk) |
-| Firefox | Coming Soon                                                                                                        |
+| Firefox | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/save-pad/)                                        |
 | Opera   | Coming Soon                                                                                                        |
 | Edge    | Coming Soon                                                                                                        |
 
