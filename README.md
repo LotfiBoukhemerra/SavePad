@@ -8,12 +8,6 @@ A simple Chrome Extension to save your code directly from dartpad.dev.
 -   Option to save via a browser action popup or a context menu item.
 -   Downloads the code as a `.dart` file.
 
-## Installation
-
-1.  Go to the [Chrome Web Store page](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk).
-2.  Click the "Add to Chrome" button.
-3.  Confirm the installation when prompted.
-
 ## Usage
 
 1.  Navigate to [DartPad.dev](https://dartpad.dev/).
@@ -26,12 +20,19 @@ A simple Chrome Extension to save your code directly from dartpad.dev.
 
 You can find the "Save DartPad Content" extension on the following browser stores:
 
-| Browser | Link                                                                                                               |
-| :------ | :----------------------------------------------------------------------------------------------------------------- |
-| Chrome  | [Chrome Web Store](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk) |
-| Firefox | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/save-pad/)                                        |
-| Opera   | Coming Soon                                                                                                        |
-| Edge    | Coming Soon                                                                                                        |
+| Browser                                                                                                            | Link                                                                                                               |
+| :----------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| <div align="center"><img src="https://www.svgrepo.com/show/475640/chrome-color.svg" alt="Chrome" width="25"></div> | [Chrome Web Store](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk) |
+| <div align="center"><img src="https://www.svgrepo.com/show/452204/firefox.svg" alt="Firefox" width="25"></div>     | [Firefox Add-ons](https://addons.mozilla.org/en-US/firefox/addon/save-pad/)                                        |
+| <div align="center"><img src="https://www.svgrepo.com/show/452079/opera.svg" alt="Opera" width="25"></div>         | [Chrome Web Store](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk) |
+| <div align="center"><img src="https://www.svgrepo.com/show/378791/edge.svg" alt="Edge" width="25"></div>           | [Chrome Web Store](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk) |
+| <div align="center"><img src="https://www.svgrepo.com/show/378778/brave.svg" alt="Brave" width="25"></div>         | [Chrome Web Store](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk) |
+
+## Installation
+
+1.  Go to the [Chrome Web Store page](https://chromewebstore.google.com/detail/save-dartpad-content/fcfjealhddncdknllmamkhpgnlmmblmk).
+2.  Click the "Add to Chrome" button.
+3.  Confirm the installation when prompted.
 
 ## Development
 
