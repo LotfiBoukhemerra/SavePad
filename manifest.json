@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Save DartPad Content",
-    "version": "1.3.0",
+    "name": "SavePad (Save DartPad Content)",
+    "version": "1.3.1",
     "description": "Save code from DartPad with one click.",
     "homepage_url": "https://lotfibkmr.com/save-dartpad-content",
     "permissions": ["activeTab", "downloads", "scripting", "contextMenus"],
