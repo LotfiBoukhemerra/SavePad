@@ -4,14 +4,14 @@ const activeSite = 'dartpad.dev';
 const targetUrl = 'https://dartpad.dev/*';
 
 const activeIcon = {
-    16: './icons/icon16.png',
-    48: './icons/icon48.png',
-    128: './icons/icon128.png'
+    16: '/icons/icon16.png',
+    48: '/icons/icon48.png',
+    128: '/icons/icon128.png'
 };
 const inactiveIcon = {
-    16: './icons/inactive_icon16.png',
-    48: './icons/inactive_icon48.png',
-    128: './icons/inactive_icon128.png'
+    16: '/icons/inactive_icon16.png',
+    48: '/icons/inactive_icon48.png',
+    128: '/icons/inactive_icon128.png'
 };
 
 function updateIcon(tab) {
